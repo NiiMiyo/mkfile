@@ -1,4 +1,3 @@
-#include <string>
 #include <iostream>
 #include <vector>
 #include <io.h>
@@ -70,30 +69,8 @@ vector<string> dirArray(string path)
 	return vec;
 }
 
-int main(int argc, char const *argv[])
+void createPath(string path)
 {
-	if (argc <= 1)
-	{
-		cout << "You must inform the name of the file to be created." << endl;
-		return 1;
-	}
-	string path;
-	path = argv[1];
-
-	string replaceDivider[] = {"\\"};
-
-	for (string d : replaceDivider)
-	{
-		replace(path, d, DIR_DIVIDER_STRING);
-	}
-
-	while (path.at(0) == DIR_DIVIDER_CHAR)
-	{
-		path = path.substr(1, path.size());
-	}
-
-	string reversePath = reverseString(path);
-
 	vector<string> directories = dirArray(path);
 
 	for (int i = 0; i < directories.size(); i++)
@@ -105,15 +82,47 @@ int main(int argc, char const *argv[])
 			mkdir(fullDir.c_str());
 		}
 	}
+}
 
+void createFile(string path)
+{
 	ifstream file(path);
 	if (file)
 	{
-		return 0;
+		return;
 	}
 	else
 	{
-
 		ofstream file{path};
+	}
+}
+
+int main(int argc, char const *argv[])
+{
+	if (argc <= 1)
+	{
+		cout << "You must inform the name of the file to be created." << endl;
+		return 1;
+	}
+
+	for (int i = 1; i < argc; i++)
+	{
+		string path = argv[i];
+
+		string replaceDivider[] = {"\\"};
+		for (string d : replaceDivider)
+		{
+			replace(path, d, DIR_DIVIDER_STRING);
+		}
+
+		while (path.at(0) == DIR_DIVIDER_CHAR)
+		{
+			path = path.substr(1, path.size());
+		}
+
+		string reversePath = reverseString(path);
+
+		createPath(path);
+		createFile(path);
 	}
 }
