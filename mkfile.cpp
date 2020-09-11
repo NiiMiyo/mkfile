@@ -1,4 +1,3 @@
-#include <string>
 #include <iostream>
 #include <vector>
 #include <io.h>
@@ -32,20 +31,7 @@ size_t count(string str, char counted)
 	return counter;
 }
 
-string reverseString(string str)
-{
-	int size = str.size();
-	string reversed = "";
-
-	for (int i = size - 1; i >= 0; i--)
-	{
-		reversed += str[i];
-	}
-
-	return reversed;
-}
-
-vector<string> dirArray(string path)
+vector<string> dirVector(string path)
 {
 	vector<string> vec;
 	size_t index = 0;
@@ -70,6 +56,33 @@ vector<string> dirArray(string path)
 	return vec;
 }
 
+void createPath(string path)
+{
+	vector<string> directories = dirVector(path);
+	for (size_t i = 0; i < directories.size(); i++)
+	{
+		string fullDir = "";
+		for (size_t j = 0; j <= i; j++)
+		{
+			fullDir += directories[j] + DIR_DIVIDER_STRING;
+			mkdir(fullDir.c_str());
+		}
+	}
+}
+
+void handleCreateFile(string path)
+{
+	ifstream file(path);
+	if (file)
+	{
+		return;
+	}
+	else
+	{
+		ofstream file{path};
+	}
+}
+
 int main(int argc, char const *argv[])
 {
 	if (argc <= 1)
@@ -77,43 +90,23 @@ int main(int argc, char const *argv[])
 		cout << "You must inform the name of the file to be created." << endl;
 		return 1;
 	}
-	string path;
-	path = argv[1];
 
-	string replaceDivider[] = {"\\"};
-
-	for (string d : replaceDivider)
+	for (int i = 1; i < argc; i++)
 	{
-		replace(path, d, DIR_DIVIDER_STRING);
-	}
+		string path = argv[i];
 
-	while (path.at(0) == DIR_DIVIDER_CHAR)
-	{
-		path = path.substr(1, path.size());
-	}
-
-	string reversePath = reverseString(path);
-
-	vector<string> directories = dirArray(path);
-
-	for (int i = 0; i < directories.size(); i++)
-	{
-		string fullDir = "";
-		for (int j = 0; j <= i; j++)
+		string replaceDivider[] = {"\\"};
+		for (string d : replaceDivider)
 		{
-			fullDir += directories[j] + DIR_DIVIDER_STRING;
-			mkdir(fullDir.c_str());
+			replace(path, d, DIR_DIVIDER_STRING);
 		}
-	}
 
-	ifstream file(path);
-	if (file)
-	{
-		return 0;
-	}
-	else
-	{
+		while (path.at(0) == DIR_DIVIDER_CHAR)
+		{
+			path = path.substr(1, path.size());
+		}
 
-		ofstream file{path};
+		createPath(path);
+		handleCreateFile(path);
 	}
 }

@@ -1,39 +1,44 @@
 # mkfile
 
-mkfile is a simple C++ program to create an empty file using Command-line Interface (CLI).
+mkfile is a simple C++ program to create empty files using Command-line Interface (CLI).
 
-Based on the mkdir command to create folders, mkfile creates a single empty file in the specified folder.
+Based on the mkdir command to create folders, mkfile creates empty files in specified folder(s).
 
 ## Instalation
 
-Download mkfile at the [releases page](https://www.github.com/NiiMiyo/mkfile/releases/latest), extract it and add it to PATH.
 
 ## Usage
 
-mkfile can be used to create a file:
+mkfile can be used to create:
 
--   in the folder you are:
+-   a file in the folder you are:
 
 ```bash
 $ mkfile file.ext
 ```
 
--   in a subfolder:
+-   a file in a subfolder:
 
 ```bash
 $ mkfile subfolder/file.ext
 ```
 
--   in a superfolder:
+-   a file in a superfolder:
 
 ```bash
 $ mkfile ../file.ext
 ```
 
--   in a non-related path:
+-   a file in a non-related path:
 
 ```bash
 $ mkfile C:/path/file.ext
+```
+
+-   multiple files the same way as the previous examples:
+
+```bash
+$ mkfile C:/path/file0.ext ./file1.ext ../file2.ext
 ```
 
 If the file already exists, it **won't** be deleted or modified.
